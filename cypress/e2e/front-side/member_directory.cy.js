@@ -1,6 +1,5 @@
 /// <reference types="cypress" />
-const username = "armember2206245a"
-const password = "armember2206245a"
+
 const searchname = "armember2206249a"
 const directory_url = "http://localhost/test_lite1/member-directory/"
 const nosearchfound ="No Search Result Found."
