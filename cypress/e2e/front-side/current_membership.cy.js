@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
-const username = "armember2206249a"
-const password = "armember2206249a"
+const username = "armember2206245a"
+const password = "armember2206245a"
 const baseurl ="http://localhost/test_lite1/"
 const currentmebershipurl = baseurl+"current-membership/"
 const plan_amount ="3.00"
@@ -15,6 +15,9 @@ const redirection_url ="http://localhost/test_lite1/thank_you/"
 const Payment_gateway="Bank Transfer"
 const payment_status ="Pending"
 const payment_date ='June 23, 2024'
+const cancel_plan_text ="Your Subscription will be canceled on June 24, 2024"
+const no_plan_assigned ="There is no membership found."
+const cancel_plan_text_immidetly ="Your subscription has been cancelled."
 
 describe("current membership testing",()=>{
     beforeEach(()=>{
@@ -28,16 +31,16 @@ describe("current membership testing",()=>{
         cy.wait(1000)
     })
 /*
-    // it("Current membership details check",()=>{
-    //     cy.wait(5000)
-    //     cy.visit(currentmebershipurl)
-    //     cy.screenshot()
-    //     cy.get("td[data-label='Membership Plan']").should('contain.text',plan_name)
-    //     cy.get('td[data-label="Plan Type"]').should('contain.text',plan_amount)
-    //     cy.get('td[data-label="Starts On"]').should('contain.text',planstart) 
-    //     cy.get('td[data-label="Expires On"]').should('contain.text',expireson)
-    //     cy.get('td[data-label="Cycle Date"]').should('contain.text',cycledate)
-    // })
+    it("Current membership details check",()=>{
+        cy.wait(5000)
+        cy.visit(currentmebershipurl)
+        cy.screenshot()
+        cy.get("td[data-label='Membership Plan']").should('contain.text',plan_name)
+        cy.get('td[data-label="Plan Type"]').should('contain.text',plan_amount)
+        cy.get('td[data-label="Starts On"]').should('contain.text',planstart) 
+        cy.get('td[data-label="Expires On"]').should('contain.text',expireson)
+        cy.get('td[data-label="Cycle Date"]').should('contain.text',cycledate)
+    })
     it("Current membership Make Payment with Bank Transfer",()=>{
         cy.wait(5000)
         cy.visit(currentmebershipurl)
@@ -58,7 +61,7 @@ describe("current membership testing",()=>{
         cy.get('button[name=ARMSETUPSUBMIT]').click()
         cy.wait(10000)
         cy.url().should('eql',redirection_url)                
-    })*/
+    })
     it("check payment history",()=>{
         cy.wait(600)
         cy.visit(paymenthistoryurl)
@@ -72,4 +75,28 @@ describe("current membership testing",()=>{
         cy.get('td[data-label="Payment Date"]').first().should('contain.text',payment_date)
     })
 
+    //this is for checking plan after plan over
+    it("Cancel member subscription plan, and plan will not cancel befor plan over ",()=>{
+        cy.wait(700)
+        cy.visit(currentmebershipurl)
+        cy.get('button[class="arm_cancel_subscription_button arm_cancel_membership_link"]').click()
+        cy.wait(1000)
+        cy.get('td[class="arm_current_membership_cancelled_row"]').should('contain.text',cancel_plan_text)
+        cy.reload()
+        cy.get('td[data-label="Action"]').should('contain.text',"Cancelled")
+        cy.screenshot()
+    })
+
+*/
+    //this is for checking plan immedietly cancel 
+    it("Cancel member subscription plan, and plan will cancel immedietly ",()=>{
+        cy.wait(700)
+        cy.visit(currentmebershipurl)
+        cy.get('button[class="arm_cancel_subscription_button arm_cancel_membership_link"]').click()
+        cy.wait(1000)
+        cy.get('td[class="arm_current_membership_cancelled_row"]').should('contain.text',cancel_plan_text_immidetly)
+        cy.reload()
+        cy.get('td[class="arm_no_plan"]').should('contain.text',no_plan_assigned)
+
+    })
 })
